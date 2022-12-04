@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "331144797332",
+    "project_id": "telegram-max-abce4",
+    "storage_bucket": "telegram-max-abce4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331144797332:android:43b3e662c6dc0c2a346881",
+        "android_client_info": {
+          "package_name": "com.example.tg_max"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331144797332-g1jdf8pfqro31kq7ar09lieveddrgi5i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTa654Id36g66ZiAzbg8Ht8SxtrBPmNJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331144797332-g1jdf8pfqro31kq7ar09lieveddrgi5i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
