@@ -4,18 +4,13 @@ import androidx.fragment.app.Fragment
 import com.example.tg_max.MainActivity
 import com.example.tg_max.R
 import com.example.tg_max.activities.RegisterActivity
-import com.example.tg_max.utilits.AUTH
-import com.example.tg_max.utilits.AppTextWatcher
-import com.example.tg_max.utilits.replaceActivity
-import com.example.tg_max.utilits.showToast
-import com.google.firebase.auth.FirebaseAuth
+import com.example.tg_max.utilits.*
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.android.synthetic.main.fragment_enter_code.*
 
 
-class EnterCodeFragment(val phoneNumber: String, val id: String) :
+class EnterCodeFragment(private val phoneNumber: String, val id: String) :
     Fragment(R.layout.fragment_enter_code) {
-
 
 
     override fun onStart() {
@@ -33,14 +28,28 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) :
 
     private fun certificateCode() {
         val code = register_input_code.text.toString()
-        val credential = PhoneAuthProvider.getCredential(id ,code )
-        AUTH.signInWithCredential(credential).addOnCompleteListener{
-            if(it.isSuccessful){
-                showToast("Добро пожаловать")
-                (activity as RegisterActivity).replaceActivity(MainActivity())
-            }
-            else
-                showToast(it.exception?.message.toString())
+        val credential = PhoneAuthProvider.getCredential(id, code)
+        AUTH.signInWithCredential(credential).addOnCompleteListener { taskCredential ->
+            if (taskCredential.isSuccessful) {
+                val uid = AUTH.currentUser?.uid.toString()
+                val dateMap = mutableMapOf<String, Any>()
+                dateMap[CHILD_ID] = uid
+                dateMap[CHILD_PHONE] = phoneNumber
+                dateMap[CHILD_USERNAME] = uid
+
+                REF_DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(dateMap)
+                    .addOnCompleteListener { taskUpdateDatabase ->
+
+                        if (taskUpdateDatabase.isSuccessful) {
+                            showToast("Добро пожаловать")
+                            (activity as RegisterActivity).replaceActivity(MainActivity())
+                        } else showToast(taskUpdateDatabase.exception?.message.toString())
+
+
+                    }
+
+            } else
+                showToast(taskCredential.exception?.message.toString())
         }
     }
 
