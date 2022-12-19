@@ -6,14 +6,16 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import com.example.tg_max.activities.RegisterActivity
 import com.example.tg_max.databinding.ActivityMainBinding
+import com.example.tg_max.models.User
 import com.example.tg_max.ui.fragments.ChatsFragment
 import com.example.tg_max.ui.fragments.EnterPhoneNumberFragment
 import com.example.tg_max.ui.objects.AppDrawer
-import com.example.tg_max.utilits.AUTH
-import com.example.tg_max.utilits.initFirebase
-import com.example.tg_max.utilits.replaceActivity
-import com.example.tg_max.utilits.replaceFragment
+import com.example.tg_max.ui.objects.AppValueEventListener
+import com.example.tg_max.utilits.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
@@ -52,6 +54,15 @@ class MainActivity : AppCompatActivity() {
         mToolbar = mBinding.mainToolbar
         mAppDrawer = AppDrawer(this, mToolbar)
         initFirebase()
+        initUser()
+
+    }
+
+    private fun initUser() {
+        REF_DATABASE_ROOT.child(NODE_USERS).child(UID)
+            .addListenerForSingleValueEvent(AppValueEventListener {
+                USER = it.getValue(User::class.java) ?: User()
+            })
 
     }
 }
